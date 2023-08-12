@@ -51,13 +51,13 @@ const Header = ({formDisplay}) => {
                                 />
                             </div>
                         </button>
-                        <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'>
+                        <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-primaryLight rounded-box w-52'>
                             {Links.map((link) => (
                                 <li key={link.name}>
                                     <button
                                         data-modal='modal-login'
                                         type='button'
-                                        className='btn btn-sm btn-ghost'
+                                        className='btn btn-sm btn-ghost text-secondaryLight'
                                         onClick={
                                             link.onClick ? link.onClick : null
                                         }
