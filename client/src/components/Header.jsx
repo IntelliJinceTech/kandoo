@@ -27,11 +27,11 @@ const Header = ({formDisplay}) => {
     }
 
     return (
-        <header className='bg-indigo-600'>
+        <header className='bg-tertiaryLight'>
             <nav className='navbar max-w-7xl mx-auto'>
                 <div className='flex-1'>
                     <a
-                        className='btn btn-ghost normal-case text-xl text-slate-50'
+                        className='btn btn-ghost normal-case text-xl text-primaryLight'
                         href='https://github.com/snowballDevs/kandoo'
                     >
                         KANDOO
