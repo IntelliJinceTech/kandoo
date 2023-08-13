@@ -22,10 +22,18 @@ module.exports = {
             const {boardName, description} = req.body;
             console.log(req.body);
             const user = req.user.id;
+
+            const defaultColumns = [
+              {title: 'Backlog', tasks: []},
+              {title: 'Todo', tasks: []},
+              {title: 'In Progress', tasks: []},
+              {title: 'Done', tasks: []},
+            ]
+
             const board = await Board.create({
                 users: [user],
                 boardName,
-                categoryStages: ['Todo', 'In Progress', 'Done'],
+                columns: defaultColumns,
                 description,
                 createdBy: user,
             });
