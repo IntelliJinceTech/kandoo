@@ -14,7 +14,6 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
         const response = await dataService.getUser();
         if (response.status >= 200 && response.status < 300) {
           setUser(response.data.user.firstName);
-          console.log(`users' first name is: `,user)
         }
 
       } catch (error) {
@@ -27,9 +26,9 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
         <div>
             <Header />
             <div className='p-10'>
-                <div className='flex flex-col text-center'>
-                    <p className='text-lg'>
-                        Welcome back, <span className='font-bold'>{user}</span>{' '}
+                <div className='flex flex-col text-center text-secondaryLight'>
+                    <p className='text-3xl'>
+                        Welcome back, <span className='font-bold text-3xl'>{user}</span>{' '}
                     </p>
                     <h1 className='text-4xl font-bold'>Your Projects</h1>
                 </div>

@@ -1,7 +1,9 @@
 import Header from '../components/Header';
-import KanbanBoard from '../components/KanbanBoard';
+// import KanbanBoard from '../components/KanbanBoard';
 import WorkspaceHeader from './WorkspaceHeader';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
+import KanbanBoard from '../components/dndkanban'
+
 const Workspace = () => {
     const {selectedBoard} = useSelectedBoardContext();
 
