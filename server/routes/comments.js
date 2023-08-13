@@ -5,6 +5,9 @@ const commentsController = require('../controllers/commentsController');
 
 // prettier-ignore
 router.route('/')
+    // todo: TO BE DELETED for production
+    .get(commentsController.getComments)
+    
     .post(commentsController.createComment);
 
 // prettier-ignore

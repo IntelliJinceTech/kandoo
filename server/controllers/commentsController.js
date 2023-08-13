@@ -1,34 +1,35 @@
 const {Board} = require('../models/Board');
 
 module.exports = {
-    // ! we are commenting out getTasks because we may be able to pass tasks down in react state to render them out.
-    // getTasks: async (req, res) => {
-    //   try {
-    //     const { boardId } = req.params
-    //     // const board = await Board.findById(boardId)
-    //     console.log(boardId)
-    //     const board = await Board.findById(boardId)
+    // * this is for testing purposes only 
+    // todo Delete getComments before Production
+    getComments: async (req, res) => {
+      try {
+        const { boardId, columnId, taskId } = req.params
+        // const board = await Board.findById(boardId)
+        
+        const board = await Board.findById(boardId)
+        const column = board.columns.id(columnId)
+        const task = column.tasks.id(taskId)
 
-    //     if(board){
-    //       const {tasks} = board
-    //       return res.json(tasks)
-    //     }
 
-    //   } catch (error) {
-    //     console.error(error)
-    //     return false
-    //   }
-    // },
+        if(task){
+          const {comments} = task
+          return res.json(comments)
+        }
+
+
+      } catch (error) {
+        console.error(error)
+        return false
+      }
+    },
 
     // createTask
     createComment: async (req, res) => {
         try {
-            const {boardId, taskId} = req.params;
-            console.log(req.params);
+            const {boardId, columnId, taskId} = req.params;
 
-            console.log(req.user);
-
-            console.log(req.body);
             const comment = {
                 description: req.body.description,
                 createdBy: req.user.fullName,
@@ -38,8 +39,12 @@ module.exports = {
             if (!board) {
                 res.json('Board not found');
             }
-
-            const task = board.tasks.id(taskId);
+            const column = board.columns.id(columnId)
+            if (!column) {
+                res.json('Column not found');
+            }
+            
+            const task = column.tasks.id(taskId);
             task.comments.push(comment);
             board.save();
 
@@ -53,11 +58,8 @@ module.exports = {
 
     updateComment: async (req, res) => {
         try {
-            const {boardId, taskId, commentId} = req.params;
+            const {boardId, columnId, taskId, commentId} = req.params;
             const {description} = req.body;
-
-            // const board = await Board.findById(boardId)
-            console.log(boardId);
 
             const updatedComment = {
                 description,
@@ -74,8 +76,12 @@ module.exports = {
             if (!board) {
                 res.json('Board not found');
             }
+            const column = board.columns.id(columnId)
+            if (!column) {
+                res.json('Column not found');
+            }
 
-            const comment = board.tasks.id(taskId).comments.id(commentId);
+            const comment = column.tasks.id(taskId).comments.id(commentId);
             comment.set(updatedComment);
             await board.save();
 
@@ -90,7 +96,7 @@ module.exports = {
     // likeComment
     likeComment: async (req, res) => {
         try {
-            const {boardId, taskId, commentId} = req.params;
+            const {boardId, columnId, taskId, commentId} = req.params;
 
 
             // const board = await Board.findById(boardId)
@@ -102,7 +108,12 @@ module.exports = {
                 res.json('Board not found');
             }
 
-            const comment = board.tasks
+            const column = board.columns.id(columnId)
+            if (!column) {
+                res.json('Column not found');
+            }
+
+            column.tasks
                 .id(taskId)
                 .comments.id(commentId)
                 .$inc('likes', 1);
@@ -119,14 +130,15 @@ module.exports = {
 
     deleteComment: async (req, res) => {
         try {
-            const {boardId, taskId, commentId} = req.params;
+            const {boardId, columnId, taskId, commentId} = req.params;
             // const updatedBoard = await Board.findByIdAndUpdate(
             //   boardId,
             //   { $pull: { tasks: { _id: taskId } } }, // used to remove the task from the tasks array based on its _id property
             //   { new: true }
             // )
             const board = await Board.findById(boardId);
-            board.tasks.id(taskId).comments.id(commentId).deleteOne();
+            const column = board.columns.id(columnId)
+            column.tasks.id(taskId).comments.id(commentId).deleteOne();
             await board.save();
             console.log(board);
             return res.json(board);
