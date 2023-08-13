@@ -3,13 +3,17 @@ const {Board} = require('../models/Board');
 module.exports = {
     getTasks: async (req, res) => {
         try {
-            const {boardId} = req.params;
+            const {boardId, columnId} = req.params;
             // const board = await Board.findById(boardId)
-            console.log(boardId);
+            // console.log('boardId: ', boardId, 'columnId: ', columnId);
+            // find the specific board
             const board = await Board.findById(boardId);
-
-            if (board) {
-                const {tasks} = board;
+            // find the specific column
+            const column = board.columns.id(columnId)
+            
+            if (column) {
+                console.log(column)
+                const {tasks} = column;
                 return res.json(tasks);
             }
         } catch (error) {
@@ -21,8 +25,8 @@ module.exports = {
     // createTask
     createTask: async (req, res) => {
         try {
-            const {boardId} = req.params;
-            console.log(req.params);
+            const {boardId, columnId} = req.params;
+            // console.log(req.params);
             const {taskName, priority, taskDetail} = req.body;
 
             const task = {
@@ -31,12 +35,12 @@ module.exports = {
                 taskDetail,
             };
             const board = await Board.findById(boardId);
-
-            if (!board) {
-                res.json('Board not found');
+            const column = board.columns.id(columnId)
+            if (!column) {
+                res.json('Column not found');
             }
 
-            board.tasks.push(task);
+            column.tasks.push(task);
             board.save();
 
             return res.json(board);

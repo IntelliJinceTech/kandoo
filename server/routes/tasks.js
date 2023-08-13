@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router({mergeParams: true});
 const tasksController = require('../controllers/tasksController');
 
@@ -6,6 +7,7 @@ const tasksController = require('../controllers/tasksController');
 
 // prettier-ignore
 router.route('/')
+    .get(tasksController.getTasks) // todo: DELETE - testing purposes
     .post(tasksController.createTask);
 
 // prettier-ignore
